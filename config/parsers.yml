@@ -1,0 +1,9 @@
+parsers:
+  polezznoe:
+    name: 'Полезное'
+    settings:
+      url: 'ya.ru'
+      parse_type: 'static'
+      categories:
+        - one: 'two'
+
