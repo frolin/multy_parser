@@ -3,8 +3,8 @@ class DownloadFileService
   def initialize(agent: Mechanize.new, options:)
     @url = options.url
     @agent = agent
-    @name = options['name']
-    @path = "public/parsers/#{options['name']}"
+    @name = options.name
+    @path = "public/parsers/#{@name}"
   end
 
   def download!

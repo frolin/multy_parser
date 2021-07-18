@@ -10,10 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_04_143745) do
+ActiveRecord::Schema.define(version: 2021_07_18_021000) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "imports", force: :cascade do |t|
+    t.string "name"
+    t.jsonb "data", default: {}
+    t.string "importable_type", null: false
+    t.bigint "importable_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["importable_type", "importable_id"], name: "index_imports_on_importable"
+  end
 
   create_table "parsers", force: :cascade do |t|
     t.string "name"

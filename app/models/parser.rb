@@ -1,7 +1,8 @@
 class Parser < ApplicationRecord
-	store_accessor :settings, :url, :col_sep, :encoding, :categories, :parser_type, :path
-
 	CONFIG_PATH = "config/parsers.yml"
+
+	store_accessor :settings, :url, :col_sep, :encoding, :categories, :parser_type, :path
+	has_many :imports, as: :importable
 
 	def self.load_default!
 		YAML.load_file(CONFIG_PATH).each do |parser|
@@ -16,6 +17,6 @@ class Parser < ApplicationRecord
 
 		# return parser.path if parser
 		binding.pry
-		DownloadFileService.new(name: parser.name, url: parser.url).download!
+		DownloadFileService.new(options: parser).download!
 	end
 end

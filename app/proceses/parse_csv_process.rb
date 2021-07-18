@@ -15,10 +15,11 @@ class ParseCsvProcess
 	def process(parser)
 		file_path = DownloadFileService.new(options: parser).download!
 		csv_file = CsvParserService.new(path: file_path, encoding: @parser.encoding, col_sep: @parser.col_sep).parse!
-		binding.pry
-		csv_file.headers.map { |header| header.downcase.underscore }
-		# csv_file.each do |row|
-		#
-		# end
+
+		data = []
+		csv_file.each do |row|
+			data << row.to_hash
+		end
+		Import.new(data: data)
 	end
 end
