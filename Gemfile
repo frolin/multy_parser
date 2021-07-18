@@ -61,3 +61,4 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem "mechanize", "~> 2.8"
 gem 'charlock_holmes'
 gem 'translit'
+gem 'google_drive'

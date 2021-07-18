@@ -2,8 +2,9 @@ class Product::CategoryService
 
 	CATEGORIES = {
 		'специи' => /специ/,
-		'default' => 'не найдено'
 	}.freeze
+
+	DEFAULT_CATEGORY = 'Не найдено'
 
 	def initialize(product, target_column_name)
 		@product = product
@@ -29,7 +30,7 @@ class Product::CategoryService
 				return
 			end
 
-			add_category(CATEGORIES['default'])
+			add_category(DEFAULT_CATEGORY)
 		end
 	end
 
