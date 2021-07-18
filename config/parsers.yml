@@ -2,8 +2,11 @@ parsers:
   polezznoe:
     name: 'Полезное'
     settings:
-      url: 'ya.ru'
+      url: 'https://cloudparser.ru/export/78822-1-1241829632'
       parse_type: 'static'
+      encoding: 'windows-1251'
+      col_sep: ';'
+      slug: 'poleznoe'
       categories:
-        - one: 'two'
+        - nuts: 'орехи'
 

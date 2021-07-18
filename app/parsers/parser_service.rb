@@ -1,25 +1,30 @@
 class ParserService
-  def initialize(agent: Mechanize.new, type:, url:)
-    @url = url
-    @type = type
-    @agent = agent
-  end
 
-  def parse!
-    parse
-  end
+	def self.read(name)
+		Parser.find_by(name: name)
+	end
 
-  private
+	def initialize(agent: Mechanize.new, type:, url:)
+		@url = url
+		@type = type
+		@agent = agent
+	end
 
-  def page
-    @page ||= @agent.get(@url)
-  end
+	def parse!
+		parse
+	end
 
-  def parsing
-  end
+	private
 
-  def parse
-    page
-  end
+	def page
+		@page ||= @agent.get(@url)
+	end
+
+	def parsing
+	end
+
+	def parse
+		page
+	end
 
 end
