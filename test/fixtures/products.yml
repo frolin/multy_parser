@@ -1,0 +1,20 @@
+# == Schema Information
+#
+# Table name: products
+#
+#  id         :bigint           not null, primary key
+#  data       :jsonb
+#  name       :string
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
+
+one:
+  name: MyString
+  data: 
+  import: one
+
+two:
+  name: MyString
+  data: 
+  import: two
