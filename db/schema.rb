@@ -10,10 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_18_021000) do
+ActiveRecord::Schema.define(version: 2021_07_18_111827) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "import_products", force: :cascade do |t|
+    t.bigint "import_id", null: false
+    t.bigint "product_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["import_id"], name: "index_import_products_on_import_id"
+    t.index ["product_id"], name: "index_import_products_on_product_id"
+  end
 
   create_table "imports", force: :cascade do |t|
     t.string "name"
@@ -32,10 +41,19 @@ ActiveRecord::Schema.define(version: 2021_07_18_021000) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "products", force: :cascade do |t|
+    t.string "name"
+    t.jsonb "data"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "providers", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  add_foreign_key "import_products", "imports"
+  add_foreign_key "import_products", "products"
 end
