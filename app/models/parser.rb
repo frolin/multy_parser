@@ -12,7 +12,9 @@ class Parser < ApplicationRecord
 	CONFIG_PATH = "config/parsers.yml"
 
 	store_accessor :settings, :url, :slug, :col_sep,
-	               :encoding, :categories, :parser_type, :path, :category_find_target_column_name
+	               :encoding, :categories, :parser_type, :path, :category_find_target_column_name,
+	               :spreadsheet_sync_url
+
 	has_many :imports, as: :importable
 
 	def self.load_default!

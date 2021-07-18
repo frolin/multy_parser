@@ -3,11 +3,10 @@ class ParseCsvProcess
 	def initialize(name)
 		@name = name
 		@parser = Parser.find_by(name: @name)
-		@worksheet ||= GoogleSpreadsheetService.new.worksheet
 	end
 
 	def start
-		return 'not found' unless @parser
+		return "Not found parser name: #{@name}" unless @parser
 		process
 	end
 
@@ -21,6 +20,7 @@ class ParseCsvProcess
 			# новый импорт
 			# создаём продукт
 			product = import.products.new(name: @parser.name, data: row.to_h)
+
 			# находим категории
 			Product::CategoryService.new(product, @parser.category_find_target_column_name).categorize!
 
@@ -37,22 +37,8 @@ class ParseCsvProcess
 		end
 
 		import.save!
-
-		# headers
-		@parser.imports.last.products.first.data.keys.each_with_index do |column, col_num|
-			@worksheet[1, col_num + 1] = column
-		end
-
-		# body
-		@parser.imports.last.products.each_with_index do |product, row_num|
-			product.data.values.each_with_index do |column, col_num|
-				@worksheet[row_num + 2, col_num + 1] = column
-			end
-		end
-
-		@worksheet.save
-
-		# @parser.imports.create!(data:  csv.map(&:to_h))
+		binding.pry
+		GoogleDriveService.sync(@parser.imports.last)
 	end
 
 	def download_file

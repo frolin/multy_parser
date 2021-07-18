@@ -8,6 +8,7 @@ parsers:
       col_sep: ';'
       slug: 'pzn'
       category_find_target_column_name: 'Название товара'
+      spreadsheet_sync_url: '1_DhZvlzwlviXWVgksClNF1cNUl-F8e_Z9_-LjY0P-AU'
       categories:
         - nuts: 'орехи'
 
