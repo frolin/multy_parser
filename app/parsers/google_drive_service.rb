@@ -1,6 +1,6 @@
 class GoogleDriveService
 	def initialize(import)
-		@session ||= GoogleDrive::Session.from_service_account_key("multy-parser-c9349a2f34b0.json")
+		@session ||= GoogleDrive::Session.from_service_account_key("config/multy-parser-c9349a2f34b0.json")
 		@import = import
 	end
 
@@ -38,8 +38,4 @@ class GoogleDriveService
 			end
 		end
 	end
-
-	# body
-
-
 end

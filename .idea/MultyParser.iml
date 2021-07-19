@@ -129,6 +129,7 @@
     <orderEntry type="library" scope="PROVIDED" name="spring (v2.1.1, RVM: ruby-2.7.3) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="sprockets (v4.0.2, RVM: ruby-2.7.3) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="sprockets-rails (v3.2.2, RVM: ruby-2.7.3) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="telegram-bot (v0.15.4, RVM: ruby-2.7.3) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="thor (v1.1.0, RVM: ruby-2.7.3) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="tilt (v2.0.10, RVM: ruby-2.7.3) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="trailblazer-option (v0.1.1, RVM: ruby-2.7.3) [gem]" level="application" />
@@ -405,6 +406,19 @@
           <RakeTaskImpl description="Restart app by touching tmp/restart.txt" fullCommand="restart" id="restart" />
           <RakeTaskImpl description="Generate a cryptographically secure secret key (this is typically used to generate a secret for cookie sessions)" fullCommand="secret" id="secret" />
           <RakeTaskImpl description="Report code statistics (KLOCs, etc) from the application or engine" fullCommand="stats" id="stats" />
+          <RakeTaskImpl id="telegram">
+            <subtasks>
+              <RakeTaskImpl id="bot">
+                <subtasks>
+                  <RakeTaskImpl description="Perform `close` command for all or specific BOT" fullCommand="telegram:bot:close" id="close" />
+                  <RakeTaskImpl description="Delete webhooks for all or specific BOT" fullCommand="telegram:bot:delete_webhook" id="delete_webhook" />
+                  <RakeTaskImpl description="Perform logOut command for all or specific BOT" fullCommand="telegram:bot:log_out" id="log_out" />
+                  <RakeTaskImpl description="Run poller" fullCommand="telegram:bot:poller" id="poller" />
+                  <RakeTaskImpl description="Set webhook urls for all bots" fullCommand="telegram:bot:set_webhook" id="set_webhook" />
+                </subtasks>
+              </RakeTaskImpl>
+            </subtasks>
+          </RakeTaskImpl>
           <RakeTaskImpl description="Runs all tests in test folder except system ones" fullCommand="test" id="test" />
           <RakeTaskImpl id="test">
             <subtasks>
