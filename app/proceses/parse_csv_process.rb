@@ -13,11 +13,16 @@ class ParseCsvProcess
 	private
 
 	def process
+
 		csv = CsvParserService.new(path: download_file, encoding: @parser.encoding, col_sep: @parser.col_sep).parse!
+
+		# новый импорт
 		import = @parser.imports.new
 
 		csv.each_with_index do |row, row_num|
-			# новый импорт
+			# Если продукт уже есть
+			next if Product.exists?(row.to_h['Артикул'])
+
 			# создаём продукт
 			product = import.products.new(name: @parser.name, data: row.to_h)
 
@@ -37,8 +42,10 @@ class ParseCsvProcess
 		end
 
 		import.save!
-		binding.pry
-		GoogleDriveService.sync(@parser.imports.last)
+
+		GoogleDriveService.new(@parser).sync
+
+		puts "#{self.class.name} end process"
 	end
 
 	def download_file

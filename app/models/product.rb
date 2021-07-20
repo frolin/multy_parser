@@ -13,4 +13,9 @@ class Product < ApplicationRecord
 
 	has_many :import_products
 	has_many :imports, through: :import_products
+
+	def self.exists?(value)
+		return true if self.where('data @> ?', {'Артикул': value}.to_json).exists?
+	end
+
 end

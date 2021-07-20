@@ -1,0 +1,18 @@
+ru:
+  telegram:
+    menu:
+      prompt: 'Приветствую Фламандец, чем могу помочь ?'
+    parsers:
+      prompt: 'Список парсеров'
+      last_import_date: |
+        Последний импорт:  %{value}
+        Новых товаров: %{new_products_count}
+      google_docs: 'ГУГЛДОК'
+    message:
+      content: 'ХАЮ ХАЙ'
+
+    inline_keyboard:
+      prompt: 'Приветствую Фламандец, чем могу помочь ?'
+      issues: 'Обращения'
+    callback_query:
+      prompt: 'Приветствую Фламандец,'

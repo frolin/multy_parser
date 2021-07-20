@@ -24,7 +24,6 @@ class Import < ApplicationRecord
 	private
 
 	def categorize
-		binding.pry
 		data
 	end
 
