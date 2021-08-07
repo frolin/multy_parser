@@ -28,14 +28,14 @@ class GoogleDriveService
 
 	def headers
 		@products.first.data.keys.each_with_index do |column, col_num|
-			worksheet[1, col_num + 1] = column
+			worksheet[1, col_num + 1] = column unless worksheet[1, col_num + 1] == column
 		end
 	end
 
 	def rows
 		@products.each_with_index do |product, row_num|
 			product.data.values.each_with_index do |column, col_num|
-				worksheet[row_num + 2, col_num + 1] = column
+				worksheet[row_num + 2, col_num + 1] = column 	unless worksheet[row_num + 2, col_num + 1] == column
 			end
 		end
 	end

@@ -3,23 +3,14 @@ class TelegramController < Telegram::Bot::UpdatesController
 
 	def query
 		list = Parser.all.each do |p|
-			[{ text: p.name,  callback_data: "parser-#{p.name}"}]
+			[{ text: p.name, callback_data: "parser-#{p.name}" }]
 		end
 
-		{
-			inline_keyboard: [
-				list
-				# [{ text: t('.parsers.google_docs'), url: "https://docs.google.com/spreadsheets/d/#{p.spreadsheet_sync_url}" }],
-			],
-		}
-
-
-
-		# { inline_keyboard!: [list]	}
+		{ inline_keyboard: [list] }
 	end
 
 	def parsers!
-		respond_with :message, text: t('.prompt'), reply_markup: 	query
+		respond_with :message, text: t('.prompt'), reply_markup: query
 	end
 
 	def start!(*)
@@ -74,13 +65,25 @@ class TelegramController < Telegram::Bot::UpdatesController
 	end
 
 	def callback_query(data)
+		p = Parser.find_by(name: 'Полезное')
 		if data == 'parser-Полезное'
 			last_import = Parser.first.imports.last
-			respond_with :message, text: t('telegram.parsers.last_import_date', value: last_import.created_at, new_products_count: last_import.products.size)
+			respond_with :message,
+			             text: t('telegram.parsers.last_import_date',
+			                     value: last_import.created_at,
+			                     new_products_count: last_import.products.size),
+			             reply_markup: { inline_keyboard: [
+			             ]
+			             }
+
+			# reply_markup:
+			#   				[,
+			#
+			# 	             [{ text: t('.parsers.google_docs'), url: "https://docs.google.com/spreadsheets/d/#{p.spreadsheet_sync_url}" }]
 
 			# answer_callback_query t('.alert'), show_alert: true
-		else
-			answer_callback_query t('.no_alert')
+			# else
+			# 	answer_callback_query t('.no_alert')
 		end
 	end
 
