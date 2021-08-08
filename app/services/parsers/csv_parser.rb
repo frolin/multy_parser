@@ -1,7 +1,6 @@
 require 'csv'
 module Parsers
-
-	class Csv
+	class CsvParser
 		def initialize(path:, col_sep:, encoding:, headers: true)
 			@encoding = encoding
 			@path = path

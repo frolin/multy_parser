@@ -18,9 +18,10 @@ class Parser < ApplicationRecord
 	has_many :imports, as: :importable
 
 	def self.load_default!
-		YAML.load_file(CONFIG_PATH).each do |parser|
-			next if Parser.find_by(name: parser[1].values.first['name'])
-			self.create!(parser[1].values.first)
+		parsers = YAML.load_file(CONFIG_PATH)['parsers']
+		parsers.each do |parser|
+			next if Parser.find_by(name: parser[1]['name'])
+			self.create!(parser[1])
 		end
 	end
 

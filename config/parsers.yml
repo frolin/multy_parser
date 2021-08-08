@@ -12,3 +12,10 @@ parsers:
       categories:
         - nuts: 'орехи'
 
+  urbech:
+    name: 'Урбеч'
+    settings:
+      url: 'https://urbech.org/catalog'
+      categories_css_path: '.col-right .categories a'
+      exclude_categories: ['Новинки', 'Акции',]
+

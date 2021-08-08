@@ -1,4 +1,4 @@
-class Product::CategoryService
+class ProductData::CategoryService
 
 	CATEGORIES = {
 		'специи' => /специ/,

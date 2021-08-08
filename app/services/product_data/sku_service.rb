@@ -1,4 +1,4 @@
-class Product::SkuService
+class ProductData::SkuService
 	def initialize(product, slug)
 		@slug = slug
 		@product = product

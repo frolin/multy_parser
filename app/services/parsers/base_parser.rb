@@ -1,22 +1,22 @@
 module Parsers
-	class ParserService
+	class BaseParser
 		def self.read(name)
 			Parser.find_by(name: name)
 		end
 
-		def initialize(agent: '', type:, url:)
+		def initialize(agent: Mechanize.new, type:, url:)
 			@url = url
 			@type = type
 			@agent = agent
 		end
 
 		def start
-			binding.pry
-       name = @type.to_s.capitalize
+			name = @type.to_s.capitalize
 
-      strategy = Parsers.conts_get(name).new
-      strategy.parse!
-    end
+			strategy = Parsers.const_get("#{name}Parser").new
+			strategy.url = @url if @url
+			strategy.parse!
+		end
 
 		def parse!
 			raise NotImplementedError

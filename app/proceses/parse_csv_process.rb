@@ -27,13 +27,13 @@ class ParseCsvProcess
 			product = import.products.new(name: @parser.name, data: row.to_h)
 
 			# находим категории
-			Product::CategoryService.new(product, @parser.category_find_target_column_name).categorize!
+			ProductData::CategoryService.new(product, @parser.category_find_target_column_name).categorize!
 
 			# добавляем артикул
-			Product::SkuService.new(product, @parser.slug).add_sku!
+			ProductData::SkuService.new(product, @parser.slug).add_sku!
 
 			# добавляем мета теги
-			Product::MetaTagsService.new(product)
+			ProductData::MetaTagsService.new(product)
 
 			# сртируем перед сохранением
 			product.data.sort.to_h
@@ -43,12 +43,12 @@ class ParseCsvProcess
 
 		import.save!
 
-		GoogleDriveService.new(@parser).sync
+		Export::GoogleDriveService.new(@parser).sync
 
 		puts "#{self.class.name} end process"
 	end
 
 	def download_file
-		DownloadFileService.new(options: @parser).download!
+		Import::DownloadFileService.new(options: @parser).download!
 	end
 end

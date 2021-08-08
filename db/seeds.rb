@@ -28,3 +28,6 @@
 # Соусы
 # Греческая косметика
 # Суперфуды
+
+Parser.load_default!
+ParseSiteProcess.new(url: Parser.last.url, settings: Parser.last.settings).process

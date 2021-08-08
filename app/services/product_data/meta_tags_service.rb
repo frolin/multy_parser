@@ -1,4 +1,4 @@
-class Product::MetaTagsService
+class ProductData::MetaTagsService
 	def initialize(product)
 		@product = product
 	end

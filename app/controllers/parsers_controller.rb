@@ -3,6 +3,6 @@ class ParsersController < ApplicationController
 	end
 
 	def parse
-		ParserService.new(agent: Mechanize.new, type: params[:type], url: params[:url])
+		Parsers::BaseParser.new(agent: Mechanize.new, type: params[:type], url: params[:url])
 	end
 end
