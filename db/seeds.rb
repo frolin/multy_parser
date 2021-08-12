@@ -29,5 +29,11 @@
 # Греческая косметика
 # Суперфуды
 
+# GOOGLE spreadsheet import
+# https://docs.google.com/spreadsheets/d/1LZ8InEqMOXorxRQP-8rC-y64lmhW-SqGAkfKCPGqvdA/export?format=xlsx
+# 11L1kUWSc6tCLymAKifgMKbAENJX6MIGt4zusIgRiOV8o
+# 1L1kUWSc6tCLymAKifgMKbAENJX6MIGt4zusIgRiOV8o
+ImportData::GoogleSpreadsheet.new('1L1kUWSc6tCLymAKifgMKbAENJX6MIGt4zusIgRiOV8o')
+
 Parser.load_default!
 ParseSiteProcess.new(url: Parser.last.url, settings: Parser.last.settings).process

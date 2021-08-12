@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_18_111827) do
+ActiveRecord::Schema.define(version: 2021_08_12_234307) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -39,6 +39,9 @@ ActiveRecord::Schema.define(version: 2021_07_18_111827) do
     t.jsonb "settings", default: {}
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "provider_id", null: false
+    t.string "slug"
+    t.index ["provider_id"], name: "index_parsers_on_provider_id"
   end
 
   create_table "products", force: :cascade do |t|
@@ -52,8 +55,10 @@ ActiveRecord::Schema.define(version: 2021_07_18_111827) do
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "slug"
   end
 
   add_foreign_key "import_products", "imports"
   add_foreign_key "import_products", "products"
+  add_foreign_key "parsers", "providers"
 end
