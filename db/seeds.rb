@@ -35,5 +35,7 @@
 # 1L1kUWSc6tCLymAKifgMKbAENJX6MIGt4zusIgRiOV8o
 ImportData::GoogleSpreadsheet.new('1L1kUWSc6tCLymAKifgMKbAENJX6MIGt4zusIgRiOV8o')
 
-Parser.load_default!
-ParseSiteProcess.new(url: Parser.last.url, settings: Parser.last.settings).process
+Provider.init
+ParseSiteProcess.new(url: Parser.last.url, settings: Parser.find_by(slug: 'polezznoe')).process
+
+ImportData::Xlsx.new(parser: Parser.find_by(name: 'afon')).process!

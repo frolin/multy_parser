@@ -19,18 +19,30 @@
 #  fk_rails_...  (provider_id => providers.id)
 #
 class Parser < ApplicationRecord
-	CONFIG_PATH = "config/parsers.yml"
+  CONFIG_PATH = "config/parsers.yml"
 
-	store_accessor :settings, :url, :short_name, :col_sep,
-	               :encoding, :categories, :parser_type, :path, :category_find_target_column_name,
-	               :spreadsheet_sync_url
-	belongs_to :provider
-	has_many :imports, as: :importable
+  belongs_to :provider
+  has_many :imports, as: :importable
 
-	def self.download_file(parser_name)
-		parser = Parser.find_by(name: parser_name)
+  store_accessor :settings, :url,
+                 :col_sep,
+                 :category_find_target_column_name,
+                 :sku,
+                 :start_row,
+                 :short_name,
+                 :spreadsheet_sync_url,
+                 :encoding,
+                 :categories,
+                 :pages,
+                 :parser_type,
+                 :path,
+                 :google_doc_id
 
-		# return parser.path if parser
-		DownloadFileService.new(options: parser).download!
-	end
+
+  def self.download_file(parser_name)
+    parser = Parser.find_by(name: parser_name)
+
+    # return parser.path if parser
+    DownloadFileService.new(options: parser).download!
+  end
 end

@@ -63,5 +63,8 @@ gem "mechanize", "~> 2.8"
 gem 'charlock_holmes'
 gem 'translit'
 gem 'google_drive'
+gem 'google_drive'
 gem 'telegram-bot'
+
+# XLS
 gem 'roo'

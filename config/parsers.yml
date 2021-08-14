@@ -23,10 +23,26 @@ parsers:
       short_name: 'urbch'
 
   afon:
-    name: 'Афоновый сад'
+    name: 'Афонский сад'
     slug: 'afon'
     settings:
       short_name: 'afon'
       url: 'https://docs.google.com/spreadsheets/d/1L1kUWSc6tCLymAKifgMKbAENJX6MIGt4zusIgRiOV8o/edit#gid=200184738'
-      type: 'with_pages'
+      google_doc_id: '1L1kUWSc6tCLymAKifgMKbAENJX6MIGt4zusIgRiOV8o'
+      file_type: 'with_pages'
       pages: ['Масло оливковое', "Оливки, пасты, брускеты", 'Овощная консервация', 'Сладости', 'Макароны, мука', 'Постная трапеза', 'Разное' ]
+      start_row:  4
+      sku: 'ШТРИХ-КОД'
+      category_search_type: 'blank_line'
+      category_map:
+        '0': Номер
+        '1': ИЗОБРАЖЕНИЕ
+        '2': НАИМЕНОВАНИЕ
+        '3': ОБЪЕМ
+        '4': ТАРА
+        '5': В КОРОБКЕ
+        '6': СРОК ГОДНОСТИ
+        '7': ШТРИХ-КОД
+        '8': ЦЕНА ОПТ.
+        '9': "вес брутто единицы товара"
+        '10': '(без учета упаковочной тары)"'
