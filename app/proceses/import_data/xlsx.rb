@@ -30,7 +30,6 @@ class ImportData::Xlsx
       table_range.each { |row|
         next unless product_add?
 
-        binding.pry
 
         row_data = Hash[[header, spreadsheet.row(row)].transpose]
         import.products.new(sku: row_data[@parser.sku], data: row_data, provider: @parser.provider)
