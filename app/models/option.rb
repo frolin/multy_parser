@@ -5,6 +5,7 @@
 #  id         :bigint           not null, primary key
 #  data       :jsonb
 #  name       :string
+#  sku        :string
 #  slug       :string
 #  created_at :datetime         not null
 #  updated_at :datetime         not null

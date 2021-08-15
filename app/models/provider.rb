@@ -20,7 +20,7 @@ class Provider < ApplicationRecord
 		parsers.each do |parser|
 			next if find_by(name: parser[1]['name'])
 			provider = new(name: parser[1]['name'], slug: parser[1]['slug'] )
-			binding.pry
+
 			provider.parsers.new(parser[1])
 			provider.save!
 		end

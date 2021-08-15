@@ -32,9 +32,15 @@
 # GOOGLE spreadsheet import
 # https://docs.google.com/spreadsheets/d/1LZ8InEqMOXorxRQP-8rC-y64lmhW-SqGAkfKCPGqvdA/export?format=xlsx
 # 1L1kUWSc6tCLymAKifgMKbAENJX6MIGt4zusIgRiOV8o
-ImportData::GoogleSpreadsheet.new('1L1kUWSc6tCLymAKifgMKbAENJX6MIGt4zusIgRiOV8o')
+
 
 Provider.init
 ParseSiteProcess.new(url: Parser.last.url, settings: Parser.find_by(slug: 'polezznoe')).process
 
-ImportData::Xlsx.new(parser: Parser.find_by(name: 'afon')).process!
+spreadsheet ||= ImportData::GoogleSpreadsheet.new('1L1kUWSc6tCLymAKifgMKbAENJX6MIGt4zusIgRiOV8o').spreadsheet
+ImportData::Xlsx.new(parser: Parser.find_by(slug: 'afon'),
+                     spreadsheet: spreadsheet).process!
+
+
+ImportProduct.delete_all; Import.delete_all; Product.delete_all; Parser.delete_all; Provider.delete_all
+Provider.init

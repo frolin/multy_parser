@@ -27,6 +27,8 @@ class Parser < ApplicationRecord
   store_accessor :settings, :url,
                  :col_sep,
                  :category_find_target_column_name,
+                 :header_row,
+                 :header_map,
                  :sku,
                  :start_row,
                  :short_name,
