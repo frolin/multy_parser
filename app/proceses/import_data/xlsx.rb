@@ -37,16 +37,13 @@ class ImportData::Xlsx
           row_data[name] = data[ col_num.to_i - 1 ]
         end
 
-        binding.pry if row_num == 21
 
 				next unless product_add?(row_data)
 
 				if product_option?(row_data)
 					# DANGER!
-          binding.pry
           Product.find_by(sku: spreadsheet.row(row_num)).options.new(sku: row_data[parser.sku], data: row_data, provider: parser.provider).save!
         elsif row_data[parser.sku].present?
-          binding.pry
 					import.products.new(sku: row_data[parser.sku], data: row_data, provider: parser.provider).save!
         else
           next
@@ -70,7 +67,6 @@ class ImportData::Xlsx
 
 		row_data[parser.sku].present? || Product.find_by(sku: row_data[parser.sku])
 	end
-
 end
 
 
