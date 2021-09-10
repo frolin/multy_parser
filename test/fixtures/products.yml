@@ -4,6 +4,7 @@
 #
 #  id          :bigint           not null, primary key
 #  data        :jsonb
+#  main        :boolean          default(FALSE), not null
 #  name        :string
 #  sku         :string
 #  created_at  :datetime         not null
