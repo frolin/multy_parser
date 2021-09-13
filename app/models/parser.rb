@@ -29,7 +29,6 @@ class Parser < ApplicationRecord
                  :category_find_target_column_name,
                  :header_row,
                  :header_map,
-                 :sku,
                  :start_row,
                  :short_name,
                  :spreadsheet_sync_url,
@@ -38,7 +37,8 @@ class Parser < ApplicationRecord
                  :pages,
                  :parser_type,
                  :path,
-                 :google_doc_id
+                 :google_doc_id,
+                 :sku_column
 
 
   def self.download_file(parser_name)

@@ -68,3 +68,4 @@ gem 'telegram-bot'
 
 # XLS
 gem 'roo'
+gem 'amazing_print'

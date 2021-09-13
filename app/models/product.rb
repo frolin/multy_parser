@@ -28,7 +28,9 @@ class Product < ApplicationRecord
 	has_many :options
 
 	scope :main_products, -> { where(main: true) }
-	# validates :sku, presence: true
+	scope :with_options, -> { joins(:options) }
+
+	validates :sku, uniqueness: true
 
 	def self.exists?(value)
 		return true if self.where('data @> ?', { 'Артикул': value }.to_json).exists?

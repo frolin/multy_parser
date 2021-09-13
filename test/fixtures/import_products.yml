@@ -3,6 +3,8 @@
 # Table name: import_products
 #
 #  id         :bigint           not null, primary key
+#  page_name  :string
+#  row_number :integer
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  import_id  :bigint           not null
