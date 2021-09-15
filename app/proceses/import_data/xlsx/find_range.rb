@@ -1,25 +1,26 @@
 class ImportData::Xlsx::FindRange
-	def initialize(parser, spreadsheet:)
-		@parser = parser
+	def initialize(config:, spreadsheet:, page:)
+		@config = config
 		@spreadsheet = spreadsheet
-		@sku_column = parser.sku_column
-		@sku_name = parser.header_map[parser.sku_column.to_s]
-		@provider = parser.provider
+		@sku_column = config.sku_column
+		@sku_name = config.header_map[config.sku_column.to_s]
+		@provider = config.provider
+		@header = config.header_map
+		@page = page
 	end
 
-	def find_ranges(pages)
-		pages.map do |page|
-			{ page_name: page, product_map: find_range(page) }
-		end
+	def process!
+		find_range
 	end
 
-	def find_range(page)
+	private
+
+	def find_range
 		basic_products = {}
-		main_product_row ||= parser.start_row
+		main_product_row ||= @config.start_row
 
-		table_range(page).each do |row_num|
+		table_range.each do |row_num|
 			@current_row = row_num
-			@sheet_name = page
 
 			if product_main?
 				basic_products[row_num] = []
@@ -34,6 +35,10 @@ class ImportData::Xlsx::FindRange
 		basic_products
 	end
 
+	def table_range(offset = nil)
+		(@config.start_row..@spreadsheet.sheet(@page).last_row - (offset || 2))
+	end
+
 	def product_option?
 		row_data[@sku_name].present? && row_data['НАИМЕНОВАНИЕ'].blank?
 	end
@@ -45,15 +50,15 @@ class ImportData::Xlsx::FindRange
 	def row_data
 		row_data = {}
 
-		header.each { |col_num, name|
-			sheet = spreadsheet.sheet(@sheet_name)
+		@header.each { |col_num, name|
+			sheet = @spreadsheet.sheet(@page)
 			data = sheet.row(@current_row)
 			margin = 2
 			sku_column = @sku_column - margin
-
-			if data[sku_column].class == Float
-				data[sku_column] = data[sku_column].to_i.to_s
-			end
+			#
+			# if data[sku_column].class == Float
+			# 	data[sku_column] = data[sku_column].to_i.to_s
+			# end
 
 			row_data[name] = data[col_num.to_i - margin]
 		}

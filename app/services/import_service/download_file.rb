@@ -1,6 +1,5 @@
-module Import
-
-	class DownloadFileService
+module ImportService
+	class DownloadFile
 
 		def initialize(agent: Mechanize.new, options:)
 			@url = options.url

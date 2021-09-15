@@ -1,4 +1,4 @@
-class ImportData::ParseCsvProcess
+class ImportData::Csv
 
   def initialize(name)
     @name = name
@@ -13,10 +13,10 @@ class ImportData::ParseCsvProcess
   private
 
   def process
-    csv = Parser::CsvParser.new(path: download_file, encoding: @parser.encoding, col_sep: @parser.col_sep).parse!
+    csv = Parsers::CsvParser.new(path: download_file, encoding: @parser.encoding, col_sep: @parser.col_sep).parse!
 
     # новый импорт
-    import = @parser.imports.new
+    import = @parser.imports.new(provider_id: @parser.provider.id)
 
     csv.each_with_index do |row, row_num|
       # Если продукт уже есть
@@ -26,7 +26,7 @@ class ImportData::ParseCsvProcess
       product = import.products.new(name: @parser.name, data: row.to_h)
 
       # находим категории
-      ProductData::CategoryService.new(product, @parser.category_find_target_column_name).categorize!
+      ProductData::CategoryService.new(product, @parser).categorize!
 
       # добавляем артикул
       ProductData::SkuService.new(product, @parser.slug).add_sku!
@@ -36,6 +36,9 @@ class ImportData::ParseCsvProcess
 
       # сртируем перед сохранением
       product.data.sort.to_h
+
+      product.provider = @parser.provider
+
 
       product.save!
     end
@@ -48,7 +51,7 @@ class ImportData::ParseCsvProcess
   end
 
   def download_file
-    Import::DownloadFileService.new(options: @parser).download!
+    ImportService::DownloadFile.new(options: @parser).download!
   end
 
 end
