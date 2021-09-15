@@ -28,7 +28,6 @@ class Product < ApplicationRecord
 	has_many :options
 
 	scope :main_products, -> { where(main: true) }
-	scope :with_options, -> { joins(:options) }
 
 	validates :sku, uniqueness: true
 

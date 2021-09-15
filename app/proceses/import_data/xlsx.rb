@@ -24,11 +24,7 @@ class ImportData::Xlsx
 		spreadsheet.sheets.select { |sheet| sheet.in?(parser.pages) }
 	end
 
-	def find_ranges(pages)
-		pages.map do |page|
-			{ page_name: page, product_map: find_range(page) }
-		end
-	end
+
 
 	def parse_all(ranges)
 		ranges.each do |range|
@@ -67,7 +63,6 @@ class ImportData::Xlsx
 
 	def add_options(options)
 		options.each do |option_row|
-
 			option_sku = spreadsheet.cell(option_row, @sku_column).to_i.to_s
 			next if Option.find_by(sku: option_sku)
 			@product.options.new(sku: option_sku, data: row_data)
@@ -97,32 +92,6 @@ class ImportData::Xlsx
 
 	def table_range(page)
 		(parser.start_row..spreadsheet.sheet(page).last_row - 2)
-	end
-
-	def product_option?
-		row_data[@sku_name].present? && row_data['НАИМЕНОВАНИЕ'].blank?
-	end
-
-	def product_main?
-		row_data[@sku_name].present? && row_data['НАИМЕНОВАНИЕ'].present?
-	end
-
-	def row_data
-		row_data = {}
-
-		header.each { |col_num, name|
-			sheet = spreadsheet.sheet(@sheet_name)
-			data = sheet.row(@current_row)
-			margin = 2
-			sku_column = @sku_column - margin
-
-			if data[sku_column].class == Float
-				data[sku_column] = data[sku_column].to_i.to_s
-			end
-
-			row_data[name] = data[col_num.to_i - margin]
-		}
-		row_data
 	end
 
 	def header
