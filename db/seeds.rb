@@ -40,9 +40,13 @@ Provider.init
 afon = Parser.find_by(slug: 'afon')
 polezznoe = Parser.find_by(slug: 'polezznoe')
 
-ParseSite.new(settings: polezznoe).process
+Import::Products.new(parser: afon)
+Import::Products.new(parser: polezznoe)
 
-spreadsheet ||= ImportData::GoogleSpreadsheet.new('1L1kUWSc6tCLymAKifgMKbAENJX6MIGt4zusIgRiOV8o').spreadsheet
-ImportData::Xlsx.new(config: afon, spreadsheet: spreadsheet).process!
+Import::ParseSite.new(settings: polezznoe).process
+
+spreadsheet ||= ImportService::GoogleSpreadsheet.new('1L1kUWSc6tCLymAKifgMKbAENJX6MIGt4zusIgRiOV8o').spreadsheet
+Imports::Xlsx.new(config: afon, spreadsheet: spreadsheet)
+# ImportService::GoogleSpreadsheet.new(config: afon, spreadsheet: spreadsheet).process!
 
 ImportProduct.delete_all; Import.delete_all; Product.delete_all; Parser.delete_all; Provider.delete_all

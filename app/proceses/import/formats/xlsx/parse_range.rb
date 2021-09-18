@@ -1,4 +1,4 @@
-class ImportData::Xlsx::ParseRange
+class Imports::Xlsx::ParseRange
 	attr_reader :spreadsheet, :config
 
 	def initialize(config:, spreadsheet:, range:)
@@ -35,10 +35,9 @@ class ImportData::Xlsx::ParseRange
 	end
 
 	def parse(range)
-		import = @config.imports.new(provider: @provider)
-
 		@range.each do |row, options|
 			@current_row = row
+
 			clean_name = ActionController::Base.helpers.strip_tags(row_data['НАИМЕНОВАНИЕ']).to_s.squish
 			sku = row_data[@sku_name]
 
@@ -54,7 +53,12 @@ class ImportData::Xlsx::ParseRange
 			if @product.new_record?
 				ActiveRecord::Base.transaction do
 					@product.save
-					import.import_products.new(row_number: row, product_id: @product.id, import_id: import.id, page_name: range[:page_name]).save!
+
+					import = @config.imports.new(provider: @provider)
+					import.import_products.new(row_number: row,
+					                           product_id: @product.id,
+					                           import_id: import.id,
+					                           page_name: range[:page_name]).save!
 					import.save!
 				end
 			@new_records << @product

@@ -3,6 +3,7 @@ parsers:
     name: 'Полезное'
     slug: 'polezznoe'
     settings:
+      download_type: 'url'
       url: 'https://cloudparser.ru/export/78822-1-1241829632'
       parse_type: 'static'
       encoding: 'windows-1251'
@@ -26,8 +27,9 @@ parsers:
     name: 'Афонский сад'
     slug: 'afon'
     settings:
+      download_type: 'url'
       short_name: 'afon'
-      url: 'https://docs.google.com/spreadsheets/d/1L1kUWSc6tCLymAKifgMKbAENJX6MIGt4zusIgRiOV8o/edit#gid=200184738'
+      url: 'https://docs.google.com/spreadsheets/d/1L1kUWSc6tCLymAKifgMKbAENJX6MIGt4zusIgRiOV8o/export?format=xlsx'
       google_doc_id: '1L1kUWSc6tCLymAKifgMKbAENJX6MIGt4zusIgRiOV8o'
       file_type: 'with_pages'
       pages: ['Масло оливковое', "Оливки, пасты, брускеты", 'Овощная консервация', 'Сладости', 'Макароны, мука', 'Постная трапеза', 'Разное' ]

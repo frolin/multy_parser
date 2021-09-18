@@ -1,4 +1,4 @@
-class ImportData::Xlsx::FindRange
+class Imports::Xlsx::FindRange
 	def initialize(config:, spreadsheet:, page:)
 		@config = config
 		@spreadsheet = spreadsheet

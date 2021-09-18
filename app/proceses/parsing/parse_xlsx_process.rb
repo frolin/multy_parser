@@ -18,7 +18,5 @@ module Parsing
 		def process
 			GoogleSpreadsheet.new(parser.gooogle_doc_id) if parser.gooogle_doc_id.present?
 		end
-
 	end
-
 end

@@ -1,4 +1,4 @@
-class ImportData::GoogleSpreadsheet
+class ImportService::GoogleSpreadsheet
   attr_reader :spreadsheet
 
 		def initialize(gooogle_doc_id)
@@ -7,9 +7,9 @@ class ImportData::GoogleSpreadsheet
 			@spreadsheet = Roo::Spreadsheet.open(@url, extension: :xlsx)
 		end
 
-  # def filtered_pages
-	# 	spreadsheet.sheets.select { |sheet| sheet.in?(parser.pages)   }
-	# end
+	  # def filtered_pages
+		# 	spreadsheet.sheets.select { |sheet| sheet.in?(parser.pages)   }
+		# end
 
   # def parse
 		# filtered_pages.each do |page|
