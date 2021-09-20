@@ -1,12 +1,10 @@
-module Import
+module ImportProcesses
 	class Csv
-		def initialize(name)
-			@name = name
-			@parser = Parser.find_by(name: name)
+		def initialize(parser:)
+			@parser = parser
 		end
 
-		def start
-			return "Not found parser name: #{@name}" unless @parser
+		def process!
 			process
 		end
 
@@ -44,13 +42,11 @@ module Import
 
 			import.save!
 
-			Export::GoogleDriveService.new(@parser).sync
-
 			puts "#{self.class.name} end process"
 		end
 
 		def download_file
-			ImportService::DownloadFile.new(options: @parser).download!
+			ImportService::DownloadFile.new(parser: @parser).download!
 		end
 	end
 end

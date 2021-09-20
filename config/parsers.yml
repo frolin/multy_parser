@@ -1,11 +1,11 @@
 parsers:
   polezznoe:
-    name: 'Полезное'
+    name: 'Polezznoe'
     slug: 'polezznoe'
     settings:
       download_type: 'url'
       url: 'https://cloudparser.ru/export/78822-1-1241829632'
-      parse_type: 'static'
+      parse_type: 'csv'
       encoding: 'windows-1251'
       col_sep: ';'
       short_name: 'pzn'
@@ -29,8 +29,10 @@ parsers:
     settings:
       download_type: 'url'
       short_name: 'afon'
+      parse_type: 'xlsx'
       url: 'https://docs.google.com/spreadsheets/d/1L1kUWSc6tCLymAKifgMKbAENJX6MIGt4zusIgRiOV8o/export?format=xlsx'
       google_doc_id: '1L1kUWSc6tCLymAKifgMKbAENJX6MIGt4zusIgRiOV8o'
+      spreadsheet_sync_url: '1_DhZvlzwlviXWVgksClNF1cNUl-F8e_Z9_-LjY0P-AU'
       file_type: 'with_pages'
       pages: ['Масло оливковое', "Оливки, пасты, брускеты", 'Овощная консервация', 'Сладости', 'Макароны, мука', 'Постная трапеза', 'Разное' ]
       header_row: 4

@@ -1,4 +1,3 @@
-require 'down'
 module ImportService
 	class DownloadFile
 
@@ -26,11 +25,14 @@ module ImportService
 
 		def download_file
 			tempfile = Down.download(@url)
-			binding.pry
+			path = "#{@path}/#{tempfile.original_filename}"
+
 			if new_file?(tempfile)
-				FileUtils.mv(tempfile.path, "#{@path}/#{tempfile.original_filename}")
+				FileUtils.mv(tempfile.path, path)
+				path
 			else
 				puts 'file already exists with same size'
+				path
 			end
 		end
 
@@ -38,8 +40,5 @@ module ImportService
 			file_path = "#{@path}/#{tempfile.original_filename}"
 			!File.exists?(file_path) ||	FileUtils.compare_file(tempfile,file_path)
 		end
-
-
-
 	end
 end

@@ -1,13 +1,13 @@
-class Imports::Xlsx::ParseRange
-	attr_reader :spreadsheet, :config
+class ImportProcesses::Xlsx::ParseRange
+	attr_reader :spreadsheet, :parser
 
-	def initialize(config:, spreadsheet:, range:)
-		@config = config
+	def initialize(parser:, spreadsheet:, range:)
+		@parser = parser
 		@spreadsheet = spreadsheet
-		@sku_column = config.sku_column
-		@sku_name = config.header_map[config.sku_column.to_s]
-		@provider = config.provider
-		@header = config.header_map
+		@sku_column = parser.sku_column
+		@sku_name = parser.header_map[parser.sku_column.to_s]
+		@provider = parser.provider
+		@header = parser.header_map
 		@range = range[:product_map]
 		@page = range[:page_name]
 		@new_records = []
@@ -15,8 +15,10 @@ class Imports::Xlsx::ParseRange
 
 	def process!
 		case @range
-		when is_a?(Array) then parse_all(@range)
-		when is_a?(Hash) then parse(@range)
+		when is_a?(Array) then
+			parse_all(@range)
+		when is_a?(Hash) then
+			parse(@range)
 		else
 			parse(@range)
 		end
@@ -54,14 +56,14 @@ class Imports::Xlsx::ParseRange
 				ActiveRecord::Base.transaction do
 					@product.save
 
-					import = @config.imports.new(provider: @provider)
+					import = @parser.imports.new(provider: @provider)
 					import.import_products.new(row_number: row,
 					                           product_id: @product.id,
 					                           import_id: import.id,
 					                           page_name: range[:page_name]).save!
 					import.save!
 				end
-			@new_records << @product
+				@new_records << @product
 			end
 		end
 	end
@@ -91,5 +93,4 @@ class Imports::Xlsx::ParseRange
 		}
 		row_data
 	end
-
 end

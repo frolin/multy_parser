@@ -36,10 +36,10 @@ class Parser < ApplicationRecord
                  :encoding,
                  :categories,
                  :pages,
-                 :parser_type,
+                 :parse_type,
                  :path,
                  :google_doc_id,
-                 :sku_column
+                 :sku_column,
 
 
   def self.download_file(parser_name)

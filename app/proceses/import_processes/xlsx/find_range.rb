@@ -1,11 +1,11 @@
-class Imports::Xlsx::FindRange
-	def initialize(config:, spreadsheet:, page:)
-		@config = config
+class ImportProcesses::Xlsx::FindRange
+	def initialize(parser:, spreadsheet:, page:)
+		@parser = parser
 		@spreadsheet = spreadsheet
-		@sku_column = config.sku_column
-		@sku_name = config.header_map[config.sku_column.to_s]
-		@provider = config.provider
-		@header = config.header_map
+		@sku_column = parser.sku_column
+		@sku_name = parser.header_map[parser.sku_column.to_s]
+		@provider = parser.provider
+		@header = parser.header_map
 		@page = page
 	end
 
@@ -17,7 +17,7 @@ class Imports::Xlsx::FindRange
 
 	def find_range
 		basic_products = {}
-		main_product_row ||= @config.start_row
+		main_product_row ||= @parser.start_row
 
 		table_range.each do |row_num|
 			@current_row = row_num
@@ -36,7 +36,7 @@ class Imports::Xlsx::FindRange
 	end
 
 	def table_range(offset = nil)
-		(@config.start_row..@spreadsheet.sheet(@page).last_row - (offset || 2))
+		(@parser.start_row..@spreadsheet.sheet(@page).last_row - (offset || 2))
 	end
 
 	def product_option?

@@ -28,6 +28,8 @@ class Product < ApplicationRecord
 	has_many :options
 
 	scope :main_products, -> { where(main: true) }
+	scope :by_provider, -> (provider) { joins(:provider).where(providers: { slug: provider } ) }
+	scope :with_options, -> { joins(:options) }
 
 	validates :sku, uniqueness: true
 
