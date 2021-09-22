@@ -68,5 +68,7 @@ gem 'telegram-bot'
 
 # XLS
 gem 'roo'
-gem 'amazing_print'
 gem 'down'
+
+gem 'amazing_print'
+gem 'rails_semantic_logger'

@@ -1,7 +1,9 @@
 module ImportProcesses
 	class Csv
-		def initialize(parser:)
+		def initialize(parser:, file_path:)
 			@parser = parser
+			@file_path = file_path
+			@new_products = []
 		end
 
 		def process!
@@ -11,10 +13,10 @@ module ImportProcesses
 		private
 
 		def process
-			csv = Parsers::CsvParser.new(path: download_file, encoding: @parser.encoding, col_sep: @parser.col_sep).parse!
+			csv = Parsers::CsvParser.new(path: @file_path, encoding: @parser.encoding, col_sep: @parser.col_sep).parse!
 
 			# новый импорт
-			import = @parser.imports.new(provider_id: @parser.provider.id)
+			import = @parser.imports.new(provider: @parser.provider)
 
 			csv.each_with_index do |row, row_num|
 				# Если продукт уже есть
@@ -38,15 +40,14 @@ module ImportProcesses
 				product.provider = @parser.provider
 
 				product.save!
+
+				@new_products << product if product.errors.blank?
+
+				import.save!
 			end
 
-			import.save!
-
-			puts "#{self.class.name} end process"
-		end
-
-		def download_file
-			ImportService::DownloadFile.new(parser: @parser).download!
+			Rails.logger.info "#{self.class.name} end process"
+			Rails.logger.info "New products added: #{@new_products.size}"
 		end
 	end
 end

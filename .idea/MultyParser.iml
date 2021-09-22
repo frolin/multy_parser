@@ -113,6 +113,7 @@
     <orderEntry type="library" scope="PROVIDED" name="rails (v6.1.4.1, RVM: ruby-2.7.3) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="rails-dom-testing (v2.0.3, RVM: ruby-2.7.3) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="rails-html-sanitizer (v1.4.2, RVM: ruby-2.7.3) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="rails_semantic_logger (v4.6.1, RVM: ruby-2.7.3) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="railties (v6.1.4.1, RVM: ruby-2.7.3) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="rake (v13.0.6, RVM: ruby-2.7.3) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="rb-fsevent (v0.11.0, RVM: ruby-2.7.3) [gem]" level="application" />
@@ -129,6 +130,7 @@
     <orderEntry type="library" scope="PROVIDED" name="sassc (v2.4.0, RVM: ruby-2.7.3) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="sassc-rails (v2.1.2, RVM: ruby-2.7.3) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="selenium-webdriver (v3.142.7, RVM: ruby-2.7.3) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="semantic_logger (v4.8.2, RVM: ruby-2.7.3) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="semantic_range (v3.0.0, RVM: ruby-2.7.3) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="signet (v0.16.0, RVM: ruby-2.7.3) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="spring (v3.0.0, RVM: ruby-2.7.3) [gem]" level="application" />

@@ -2,13 +2,13 @@ module Export
 	class GoogleDriveService
 		def initialize(parser)
 			@session ||= GoogleDrive::Session.from_service_account_key("config/multy-parser-c9349a2f34b0.json")
-			@products = Product.by_provider(parser.slug) # where(provider: parser.provider)
+			@products = Product.by_provider(parser.slug)
 			@parser = parser
 			@worksheet = worksheet
 		end
 
 		def sync
-			puts "spreadsheet sync url: "
+			puts "spreadsheet sync url: #{@parser.url}"
 			save
 		end
 
@@ -21,10 +21,9 @@ module Export
 		def worksheet
 			google_sheet = @session.spreadsheet_by_key(@parser.spreadsheet_sync_url)
 			page_number = case @parser.name
-			              when 'Polezznoe' then
-				              1
-			              when 'Афонский сад' then
-				              2
+			              when 'Polezznoe' then 1
+			              when 'Афонский сад' then 2
+			              else 0
 			              end
 
 			google_sheet.worksheets[page_number]

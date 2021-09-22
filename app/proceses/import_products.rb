@@ -1,20 +1,12 @@
 class ImportProducts
-	def initialize(parser:)
-		@parser = parser
+	def initialize(slug:)
+		@parser = Parser.find_by(slug: slug)
 	end
 
 	def import
-		case @parser.parse_type
-		when 'xlsx'
-			spreadsheet = ImportService::GoogleSpreadsheet.new(@parser.google_doc_id).spreadsheet
-			ImportProcesses::Xlsx.new(parser: @parser, spreadsheet: spreadsheet).process!
-			Export::GoogleDriveService.new(@parser).sync
-		when 'csv'
-			ImportProcesses::Csv.new(parser: @parser).process!
-			Export::GoogleDriveService.new(@parser).sync
+		file_path = ImportService::DownloadFile.new(parser: @parser).download!
 
-		else
-			return
-		end
+		ImportProcess.new(parser: @parser, file_path: file_path).process!
+		# Export::GoogleDriveService.new(@parser).sync
 	end
 end

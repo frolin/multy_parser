@@ -5,7 +5,10 @@ module ImportService
 			@url = parser.url
 			@agent = agent
 			@name = parser.name
-			@path = "public/parsers/#{@name}"
+			@slug = parser.slug
+			@@parser_type = parser.parse_type
+
+			@tempfile = Down.download(@url)
 		end
 
 		def download!
@@ -14,8 +17,9 @@ module ImportService
 
 		private
 
-		def exist?
-			@path
+		def path
+			path = "public/parsers/#{@name}"
+			@path ||= "#{path}/#{@slug}.#{@@parser_type }"
 		end
 
 		def file
@@ -24,21 +28,18 @@ module ImportService
 		end
 
 		def download_file
-			tempfile = Down.download(@url)
-			path = "#{@path}/#{tempfile.original_filename}"
-
-			if new_file?(tempfile)
-				FileUtils.mv(tempfile.path, path)
+			if new_file?
+				FileUtils.mv(@tempfile.path, path)
+				Rails.logger.info "Download file to #{path}"
 				path
 			else
-				puts 'file already exists with same size'
+				Rails.logger.info 'File already exists with same size'
 				path
 			end
 		end
 
-		def new_file?(tempfile)
-			file_path = "#{@path}/#{tempfile.original_filename}"
-			!File.exists?(file_path) ||	FileUtils.compare_file(tempfile,file_path)
+		def new_file?
+			!File.exists?(path) && !FileUtils.compare_file(@tempfile, path)
 		end
 	end
 end
