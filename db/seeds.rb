@@ -37,14 +37,7 @@
 # Start with init Providers config
 Provider.init
 
-afon = Parser.find_by(slug: 'afon')
-polezznoe = Parser.find_by(slug: 'polezznoe')
-
-ImportProducts.new(parser: afon).import
-ImportProducts.new(parser: polezznoe).import
-
-spreadsheet ||= ImportService::GoogleSpreadsheet.new('1L1kUWSc6tCLymAKifgMKbAENJX6MIGt4zusIgRiOV8o').spreadsheet
-# Imports::Xlsx.new(config: afon, spreadsheet: spreadsheet)
-# ImportService::GoogleSpreadsheet.new(config: afon, spreadsheet: spreadsheet).process!
+ImportProducts.new(slug: 'afon').import
+ImportProducts.new(slug: 'polezznoe').import
 
 Option.delete_all; ImportProduct.delete_all; Import.delete_all; Product.delete_all; Parser.delete_all; Provider.delete_all
