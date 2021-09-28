@@ -13,6 +13,7 @@ module ImportProcesses
 
 		def process!
 			find_categories(@parser['categories_css_path'])
+			Rails.logger.info "#{self.class.name} end process"
 		end
 
 		def page

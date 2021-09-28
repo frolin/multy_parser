@@ -40,4 +40,4 @@ Provider.init
 ImportProducts.new(slug: 'afon').import
 ImportProducts.new(slug: 'polezznoe').import
 
-Option.delete_all; ImportProduct.delete_all; Import.delete_all; Product.delete_all; Parser.delete_all; Provider.delete_all
+Option.delete_all; ImportProduct.delete_all; Import.delete_all; Product.delete_all; Parser.delete_all; Provider.delete_all; Provider.init

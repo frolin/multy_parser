@@ -1,18 +1,19 @@
 module ImportProcesses
-	class Xlsx
-		# attr_reader :spreadsheet, :parser, :current_row
-		#
+	class Xlsx < ImportProcess
+		attr_reader :report
+
 		def initialize(parser:, file_path:)
-			@parser = parser
+			super(parser: parser, file_path: file_path)
+			@header = parser.header_map
+			@sku_name = parser.header_map[parser.sku_column.to_s]
 			@spreadsheet = Roo::Spreadsheet.open(file_path)
-			@range = {}
 		end
 
 		def process!
-			Rails.logger.info "start import process #{@parser.name}"
-
 			find_ranges
-			parse_all
+			parse_ranges
+
+			Rails.logger.info "#{self.class.name} finish."
 		end
 
 		private
@@ -31,11 +32,16 @@ module ImportProcesses
 			ImportProcesses::Xlsx::FindRange.new(parser: @parser, spreadsheet: @spreadsheet, page: page).process!
 		end
 
-		def parse_all
+		def parse_ranges
 			@range.each do |page_name, range|
-				Rails.logger.info("Parsing products page: #{page_name}")
+				Rails.logger.info "#{page_name} Parse range."
 
-				ImportProcesses::Xlsx::ParseRange.new(parser: @parser, spreadsheet: @spreadsheet, page: page_name, range: range).process!
+				parse_range = ImportProcesses::Xlsx::ParseRange.new(parser: @parser, spreadsheet: @spreadsheet, page: page_name, range: range)
+				parse_range.process!
+				@report = parse_range.report
+
+				Rails.logger.info("New products count: #{@report[:new_products].size + @report[:new_options].size}")
+				Rails.logger.info("Found products count: #{@report[:found_products].size + @report[:found_options].size}")
 			end
 		end
 	end

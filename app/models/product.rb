@@ -20,6 +20,7 @@
 #  fk_rails_...  (provider_id => providers.id)
 #
 class Product < ApplicationRecord
+	serialize :data, Hash
 	store_accessor :data, :category, :parser_name
 
 	has_many :import_products
@@ -28,13 +29,13 @@ class Product < ApplicationRecord
 	has_many :options
 
 	scope :main_products, -> { where(main: true) }
-	scope :by_provider, -> (provider) { joins(:provider).where(providers: { slug: provider } ) }
+	scope :by_provider, -> (slug) { joins(:provider).where(providers: { slug: slug } ) }
 	scope :with_options, -> { joins(:options) }
 
-	validates :sku, uniqueness: true
+	# validates :sku, uniqueness: true
 
 	def self.exists?(value)
-		return true if self.where('data @> ?', { 'Артикул': value }.to_json).exists?
+		self.where('data @> ?', { 'Артикул': value }.to_json).exists? || where(sku: value).exists?
 	end
 
 end

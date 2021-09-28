@@ -12,6 +12,6 @@ class ProductData::SkuService
 	private
 
 	def add_sku
-		@product.sku = "#{@slug.upcase}-#{@product.data['Артикул']}"
+		@product.sku = @product.data['Артикул']
 	end
 end

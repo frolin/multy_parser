@@ -1,13 +1,15 @@
 module ImportProcesses
-	class Csv
+	class Csv < ImportProcess
+		attr_reader :report
+
 		def initialize(parser:, file_path:)
-			@parser = parser
-			@file_path = file_path
-			@new_products = []
+			super(parser: parser, file_path: file_path)
 		end
 
 		def process!
 			process
+
+			Rails.logger.info "#{self.class.name} finish."
 		end
 
 		private
@@ -37,17 +39,15 @@ module ImportProcesses
 				# сртируем перед сохранением
 				product.data.sort.to_h
 
-				product.provider = @parser.provider
+				product.provider = @provider
 
 				product.save!
 
-				@new_products << product if product.errors.blank?
+				@report[:new_products] << product if product.errors.blank?
 
-				import.save!
+				import.save
 			end
 
-			Rails.logger.info "#{self.class.name} end process"
-			Rails.logger.info "New products added: #{@new_products.size}"
 		end
 	end
 end

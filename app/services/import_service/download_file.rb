@@ -6,9 +6,7 @@ module ImportService
 			@agent = agent
 			@name = parser.name
 			@slug = parser.slug
-			@@parser_type = parser.parse_type
-
-			@tempfile = Down.download(@url)
+			@parser_type = parser.parse_type
 		end
 
 		def download!
@@ -19,7 +17,7 @@ module ImportService
 
 		def path
 			path = "public/parsers/#{@name}"
-			@path ||= "#{path}/#{@slug}.#{@@parser_type }"
+			@path ||= "#{path}/#{@slug}.#{@parser_type}"
 		end
 
 		def file
@@ -29,6 +27,7 @@ module ImportService
 
 		def download_file
 			if new_file?
+				@tempfile = Down.download(@url)
 				FileUtils.mv(@tempfile.path, path)
 				Rails.logger.info "Download file to #{path}"
 				path

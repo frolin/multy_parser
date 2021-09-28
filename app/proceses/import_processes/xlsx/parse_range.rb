@@ -1,26 +1,22 @@
-class ImportProcesses::Xlsx::ParseRange
-	attr_reader :spreadsheet, :parser
+class ImportProcesses::Xlsx::ParseRange < ImportProcess
+	attr_reader :report
 
 	def initialize(parser:, spreadsheet:, page:, range:)
-		@parser = parser
+		super(parser: parser)
+
 		@spreadsheet = spreadsheet
-		@sku_column = parser.sku_column
-		@sku_name = parser.header_map[parser.sku_column.to_s]
-		@provider = Provider.find_by(slug: parser.slug)
-		@header = parser.header_map
 		@range = range
 		@page = page
-		@new_products = []
-		@new_options = []
+		@header = parser.header_map
 	end
 
 	def process!
-		parse
+		process
 	end
 
 	private
 
-	def parse
+	def process
 		@range.each do |row, options|
 			@current_row = row
 
@@ -42,24 +38,28 @@ class ImportProcesses::Xlsx::ParseRange
 
 					import = @parser.imports.new(provider: @provider)
 					import.import_products.new(row_number: row,
-					                           product_id: @product.id,
-					                           import_id: import.id,
+					                           product: @product,
 					                           page_name: @page).save!
 					import.save!
 				end
-				@new_products << @product
-			end
-		end
 
-		Rails.logger.info("Add new products count: #{@new_products.size + @new_options.size}")
+				@report[:new_products] << @product
+				next
+			end
+
+			@report[:found_products] << @product
+		end
 	end
 
 	def add_options(options)
 		options.each do |option_row|
-			option_sku = spreadsheet.cell(option_row, @sku_column).to_i.to_s
-			next if Option.find_by(sku: option_sku)
+			option_sku = @spreadsheet.cell(option_row, @sku_column).to_i.to_s
+			if Option.find_by(sku: option_sku)
+				@report[:found_options] << @product.options
+				next
+			end
 			@product.options.new(sku: option_sku, data: row_data)
-			@new_options << @product.options
+			@report[:new_options] << @product.options
 		end
 	end
 

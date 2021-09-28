@@ -66,9 +66,14 @@ gem 'google_drive'
 gem 'google_drive'
 gem 'telegram-bot'
 
+# business logic
+gem 'active_interaction', '~> 4.0'
+
 # XLS
 gem 'roo'
 gem 'down'
 
 gem 'amazing_print'
 gem 'rails_semantic_logger'
+gem 'execution_time'
+gem "google_custom_search_api"
