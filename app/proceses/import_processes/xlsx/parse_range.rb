@@ -7,6 +7,8 @@ class ImportProcesses::Xlsx::ParseRange < ImportProcess
 		@spreadsheet = spreadsheet
 		@range = range
 		@page = page
+		@sku_column = parser.sku_column
+		@sku_name = parser.header_map[parser.sku_column.to_s]
 		@header = parser.header_map
 	end
 
@@ -53,12 +55,16 @@ class ImportProcesses::Xlsx::ParseRange < ImportProcess
 
 	def add_options(options)
 		options.each do |option_row|
-			option_sku = @spreadsheet.cell(option_row, @sku_column).to_i.to_s
+			option_sku = row_data[@sku_name]
+
 			if Option.find_by(sku: option_sku)
 				@report[:found_options] << @product.options
 				next
 			end
-			@product.options.new(sku: option_sku, data: row_data)
+			@product.options.new(sku: option_sku,
+			                     data: row_data,
+			                     name: row_data['НАИМЕНОВАНИЕ'].squish)
+
 			@report[:new_options] << @product.options
 		end
 	end

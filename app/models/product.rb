@@ -21,7 +21,7 @@
 #
 class Product < ApplicationRecord
 	serialize :data, Hash
-	store_accessor :data, :category, :parser_name
+	store_accessor :data, :category, :parser_name, :product_image_url
 
 	has_many :import_products
 	has_many :imports, through: :import_products
@@ -32,7 +32,7 @@ class Product < ApplicationRecord
 	scope :by_provider, -> (slug) { joins(:provider).where(providers: { slug: slug } ) }
 	scope :with_options, -> { joins(:options) }
 
-	# validates :sku, uniqueness: true
+	validates :sku, uniqueness: true, presence: true
 
 	def self.exists?(value)
 		self.where('data @> ?', { 'Артикул': value }.to_json).exists? || where(sku: value).exists?

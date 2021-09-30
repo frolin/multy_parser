@@ -5,6 +5,15 @@ module Export
 			@products = Product.by_provider(parser.slug)
 			@parser = parser
 			@worksheet = worksheet
+			@column_names = [
+				{ 'НАИМЕНОВАНИЕ' => 'name' },
+				{ 'ИЗОБРАЖЕНИЯ' => 'product_image_url' },
+				'ОБЪЕМ',
+				'ТАРА', 'В КОРОБКЕ',
+				'СРОК ГОДНОСТИ',
+				'ШТРИХ-КОД',
+				'ЦЕНА ОПТ.',
+				'вес брутто единицы товара']
 		end
 
 		def sync
@@ -21,9 +30,12 @@ module Export
 		def worksheet
 			google_sheet = @session.spreadsheet_by_key(@parser.spreadsheet_sync_url)
 			page_number = case @parser.name
-			              when 'Polezznoe' then 1
-			              when 'Афонский сад' then 2
-			              else 0
+			              when 'Polezznoe' then
+				              1
+			              when 'Афонский сад' then
+				              2
+			              else
+				              0
 			              end
 
 			google_sheet.worksheets[page_number]
@@ -37,15 +49,23 @@ module Export
 		end
 
 		def add_headers
-			@products.first.data.keys.each_with_index do |column, col_num|
-				@worksheet[1, col_num + 1] = column # unless sheet[1, col_num + 1] == column
+			@column_names.each_with_index do |column_name, col_num|
+				if column_name.is_a?(Hash)
+					@worksheet[1, col_num + 1] = column_name.keys.first # unless sheet[1, col_num + 1] == column
+				else
+					@worksheet[1, col_num + 1] = column_name
+				end
 			end
 		end
 
 		def add_products
 			@products.each_with_index do |product, row_num|
-				product.data.values.each_with_index do |column, col_num|
-					@worksheet[row_num + 2, col_num + 1] = column unless @worksheet[row_num + 2, col_num + 1] == column
+				@column_names.each_with_index do |column_name, col_num|
+					if column_name.is_a?(Hash)
+						@worksheet[row_num + 2, col_num + 1] = product.send(column_name.values.first) # unless sheet[1, col_num + 1] == column
+					else
+						@worksheet[row_num + 2, col_num + 1] = product.data[column_name] #unless @worksheet[row_num + 2, col_num + 1] == column
+					end
 				end
 
 				if product.options.any?
@@ -56,8 +76,12 @@ module Export
 
 		def add_options(product)
 			product.options.each_with_index do |option, row_num|
-				option.data.values.each_with_index do |column, col_num|
-					@worksheet[row_num + 2, col_num + 1] = column unless @worksheet[row_num + 2, col_num + 1] == column
+				@column_names.each_with_index do |column_name, col_num|
+					if column_name.is_a?(Hash)
+						@worksheet[row_num + 2, col_num + 1] = product.send(column_name.values.first) # unless sheet[1, col_num + 1] == column
+					else
+						@worksheet[row_num + 2, col_num + 1] = product.data[column_name] #unless @worksheet[row_num + 2, col_num + 1] == column
+					end
 				end
 			end
 		end
