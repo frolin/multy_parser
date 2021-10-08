@@ -310,6 +310,13 @@ GEM
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.8)
+    watir (6.19.1)
+      regexp_parser (>= 1.2, < 3)
+      selenium-webdriver (>= 3.142.7)
+    watir-rails (2.2.3)
+      rack
+      rails
+      watir (>= 6.0.0.beta4)
     web-console (4.1.0)
       actionview (>= 6.0.0)
       activemodel (>= 6.0.0)
@@ -366,6 +373,7 @@ DEPENDENCIES
   translit
   turbolinks (~> 5)
   tzinfo-data
+  watir-rails
   web-console (>= 4.1.0)
   webdrivers
   webpacker (~> 5.0)

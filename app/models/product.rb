@@ -20,7 +20,6 @@
 #  fk_rails_...  (provider_id => providers.id)
 #
 class Product < ApplicationRecord
-	serialize :data, Hash
 	store_accessor :data, :category, :parser_name, :product_image_url
 
 	has_many :import_products

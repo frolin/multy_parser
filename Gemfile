@@ -77,3 +77,5 @@ gem 'amazing_print'
 gem 'rails_semantic_logger'
 gem 'execution_time'
 gem "google_custom_search_api"
+
+gem "watir-rails"
