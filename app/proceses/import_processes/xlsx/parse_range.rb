@@ -22,9 +22,6 @@ class ImportProcesses::Xlsx::ParseRange < ImportProcess
 		@range.each do |row, options|
 			@current_row = row
 
-			clean_name = ActionController::Base.helpers.strip_tags(row_data['НАИМЕНОВАНИЕ']).to_s.squish
-			sku = row_data[@sku_name]
-
 			@product = Product.find_or_initialize_by(sku: sku) do |product|
 				product.sku = sku
 				product.name = clean_name
@@ -36,6 +33,7 @@ class ImportProcesses::Xlsx::ParseRange < ImportProcess
 
 			if @product.new_record?
 				ActiveRecord::Base.transaction do
+					@product.category = @page
 					@product.save
 
 					import = @parser.imports.new(provider: @provider)
@@ -55,17 +53,21 @@ class ImportProcesses::Xlsx::ParseRange < ImportProcess
 
 	def add_options(options)
 		options.each do |option_row|
+			@current_row = option_row
 			option_sku = row_data[@sku_name]
 
 			if Option.find_by(sku: option_sku)
 				@report[:found_options] << @product.options
 				next
 			end
-			@product.options.new(sku: option_sku,
-			                     data: row_data,
-			                     name: row_data['НАИМЕНОВАНИЕ'].squish)
 
-			@report[:new_options] << @product.options
+			@option = @product.options.new(sku: option_sku,
+			                     data: row_data,
+			                     name: clean_name)
+
+			@option.category = @page
+
+			@report[:new_options] << @option
 		end
 	end
 
@@ -85,5 +87,13 @@ class ImportProcesses::Xlsx::ParseRange < ImportProcess
 			row_data[name] = data[col_num.to_i - margin]
 		}
 		row_data
+	end
+
+	def clean_name
+		ActionController::Base.helpers.strip_tags(row_data['НАИМЕНОВАНИЕ']).to_s.squish
+	end
+
+	def sku
+		row_data[@sku_name]
 	end
 end

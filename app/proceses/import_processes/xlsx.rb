@@ -11,8 +11,9 @@ module ImportProcesses
 
 		def process!
 			find_ranges
-			parse_ranges
+			Rails.logger.info(@range)
 
+			parse_ranges
 			Rails.logger.info "#{self.class.name} finish."
 		end
 
@@ -25,7 +26,7 @@ module ImportProcesses
 		end
 
 		def filtered_pages
-			@filtered_pages ||= @spreadsheet.sheets.select { |sheet| sheet.in?(@parser.pages) }
+			@filtered_pages ||= @spreadsheet.sheets.select { |sheet| sheet.downcase.in?(@parser.pages.map(&:downcase)) }
 		end
 
 		def find_range(page)

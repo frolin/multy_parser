@@ -6,10 +6,10 @@ class ImportProducts
 	def import
 		file_path = ImportService::DownloadFile.new(parser: @parser).download!
 		ImportProcess.new(parser: @parser, file_path: file_path).process!
+	end
 
-		products = Product.by_provider(@parser.slug)
-		Parsing::Images::Base.new(parser: @parser).parse!
-
+	def export
 		Export::GoogleDriveService.new(@parser).sync
 	end
+
 end

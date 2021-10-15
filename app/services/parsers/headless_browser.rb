@@ -5,7 +5,35 @@ module Parsers
 		def initialize(url, element)
 			@url = url
 			@element = element
+		end
 
+		def find
+			browser.get @url
+
+			first_hd_picture = wait.until { browser.find_element(css: '.serp-item__hd') }
+			first_hd_picture.find_element(xpath: "../../..").click
+
+			wait.until { browser.find_element(xpath: "//*[text()='Открыть']") }.click
+
+
+			image_href = wait.until { browser.find_element(css: @element) }.attribute('href')
+
+			Rails.logger.debug('quit browser')
+
+			browser.quit
+
+			image_href
+
+		rescue StandardError => e
+			Rails.logger.error("element not found")
+			nil
+		end
+
+		def browser
+			@browser ||= Selenium::WebDriver.for :chrome, options: options
+		end
+
+		def options
 			options = Selenium::WebDriver::Chrome::Options.new
 			options.add_argument('--headless')
 			options.add_argument('--enable-javascript')
@@ -14,16 +42,12 @@ module Parsers
 			options.add_argument('--allow-insecure-localhost')
 			options.add_argument("--window-size=1920,1080")
 			options.add_argument("--start-maximized")
-			@driver = Selenium::WebDriver.for :chrome, options: options
-			@wait = Selenium::WebDriver::Wait.new(:timeout => 10)
+
+			options
 		end
 
-		def find
-			@driver.get @url
-			@driver.find_element(css: 'a.serp-item__link').click
-
-			image = @wait.until { @driver.find_element(css: @element) }
-			image.attribute('src')
+		def wait
+			@wait = Selenium::WebDriver::Wait.new(:timeout => 10)
 		end
 	end
 end

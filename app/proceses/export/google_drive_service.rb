@@ -1,19 +1,23 @@
 module Export
 	class GoogleDriveService
 		def initialize(parser)
-			@session ||= GoogleDrive::Session.from_service_account_key("config/multy-parser-c9349a2f34b0.json")
+			@session ||= GoogleDrive::Session.from_service_account_key("config/multy-parser-254d73224276.json")
 			@products = Product.by_provider(parser.slug)
 			@parser = parser
 			@worksheet = worksheet
 			@column_names = [
-				{ 'НАИМЕНОВАНИЕ' => 'name' },
-				{ 'ИЗОБРАЖЕНИЯ' => 'product_image_url' },
+				{ 'Наименование' => 'name' },
+				{ 'Изображения' => 'product_image_url' },
+				{ 'Категория 1' => 'category' },
+				{ 'Артикул' => 'vendor_code' },
+				{ 'Цена розница' => 'price'},
 				'ОБЪЕМ',
 				'ТАРА', 'В КОРОБКЕ',
 				'СРОК ГОДНОСТИ',
 				'ШТРИХ-КОД',
 				'ЦЕНА ОПТ.',
-				'вес брутто единицы товара']
+
+				'ВЕС БРУТТО']
 		end
 
 		def sync
@@ -69,18 +73,19 @@ module Export
 				end
 
 				if product.options.any?
-					add_options(product)
+					add_options(product.options)
 				end
+
 			end
 		end
 
-		def add_options(product)
-			product.options.each_with_index do |option, row_num|
+		def add_options(options)
+			options.each_with_index do |option, row_num|
 				@column_names.each_with_index do |column_name, col_num|
 					if column_name.is_a?(Hash)
-						@worksheet[row_num + 2, col_num + 1] = product.send(column_name.values.first) # unless sheet[1, col_num + 1] == column
+						@worksheet[row_num + 2, col_num + 1] = option.send(column_name.values.first) # unless sheet[1, col_num + 1] == column
 					else
-						@worksheet[row_num + 2, col_num + 1] = product.data[column_name] #unless @worksheet[row_num + 2, col_num + 1] == column
+						@worksheet[row_num + 2, col_num + 1] = option.data[column_name] #unless @worksheet[row_num + 2, col_num + 1] == column
 					end
 				end
 			end

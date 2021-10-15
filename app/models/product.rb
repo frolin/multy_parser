@@ -19,22 +19,16 @@
 #
 #  fk_rails_...  (provider_id => providers.id)
 #
+
+
 class Product < ApplicationRecord
-	store_accessor :data, :category, :parser_name, :product_image_url
+	include ProductData
 
 	has_many :import_products
 	has_many :imports, through: :import_products
 	belongs_to :provider
 	has_many :options
 
-	scope :main_products, -> { where(main: true) }
-	scope :by_provider, -> (slug) { joins(:provider).where(providers: { slug: slug } ) }
 	scope :with_options, -> { joins(:options) }
-
-	validates :sku, uniqueness: true, presence: true
-
-	def self.exists?(value)
-		self.where('data @> ?', { 'Артикул': value }.to_json).exists? || where(sku: value).exists?
-	end
-
 end
+

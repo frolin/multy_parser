@@ -20,7 +20,7 @@
 #  fk_rails_...  (product_id => products.id)
 #
 class Option < ApplicationRecord
-	belongs_to :product
+	include ProductData
 
-	validates :sku, uniqueness: true
+	belongs_to :product
 end
