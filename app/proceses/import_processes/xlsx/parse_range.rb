@@ -24,7 +24,7 @@ class ImportProcesses::Xlsx::ParseRange < ImportProcess
 
 			@product = Product.find_or_initialize_by(sku: sku) do |product|
 				product.sku = sku
-				product.name = clean_name
+				product.name = clean_name(row_data)
 				product.data = row_data
 				product.provider = @provider
 			end
@@ -52,8 +52,11 @@ class ImportProcesses::Xlsx::ParseRange < ImportProcess
 	end
 
 	def add_options(options)
+		main_product = row_data
+
 		options.each do |option_row|
 			@current_row = option_row
+
 			option_sku = row_data[@sku_name]
 
 			if Option.find_by(sku: option_sku)
@@ -62,8 +65,8 @@ class ImportProcesses::Xlsx::ParseRange < ImportProcess
 			end
 
 			@option = @product.options.new(sku: option_sku,
-			                     data: row_data,
-			                     name: clean_name)
+			                     data: row_data.merge('НАИМЕНОВАНИЕ' => main_product['НАИМЕНОВАНИЕ']),
+			                     name: clean_name(main_product))
 
 			@option.category = @page
 
@@ -89,8 +92,8 @@ class ImportProcesses::Xlsx::ParseRange < ImportProcess
 		row_data
 	end
 
-	def clean_name
-		ActionController::Base.helpers.strip_tags(row_data['НАИМЕНОВАНИЕ']).to_s.squish
+	def clean_name(product)
+		ActionController::Base.helpers.strip_tags(product['НАИМЕНОВАНИЕ']).to_s.squish
 	end
 
 	def sku

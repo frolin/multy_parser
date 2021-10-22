@@ -31,7 +31,7 @@ class Parsing::Images::Base
 	end
 
 	def parse_products
-		# return if @product.product_image_url.present?
+		return if @product.product_image_url.present?
 
 		image = Parsers::HeadlessBrowser.new(url(@product.name), '.MMUnauthPopup-Skip').find
 		return unless image.present?
@@ -45,6 +45,8 @@ class Parsing::Images::Base
 		return unless @options.present?
 
 		@options.each do |product_option|
+			next if product_option.product_image_url.present?
+
 			product_option_image = Parsers::HeadlessBrowser.new(url(product_option.name), '.MMUnauthPopup-Skip').find
 			next unless product_option_image.present?
 

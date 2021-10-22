@@ -5,12 +5,13 @@ module Export
 			@products = Product.by_provider(parser.slug)
 			@parser = parser
 			@worksheet = worksheet
+			@current_row = 1
 			@column_names = [
 				{ 'Наименование' => 'name' },
 				{ 'Изображения' => 'product_image_url' },
 				{ 'Категория 1' => 'category' },
 				{ 'Артикул' => 'vendor_code' },
-				{ 'Цена розница' => 'price'},
+				{ 'Цена розница' => 'price' },
 				'ОБЪЕМ',
 				'ТАРА', 'В КОРОБКЕ',
 				'СРОК ГОДНОСТИ',
@@ -64,11 +65,13 @@ module Export
 
 		def add_products
 			@products.each_with_index do |product, row_num|
+				@current_row += 1	# header offset
+
 				@column_names.each_with_index do |column_name, col_num|
 					if column_name.is_a?(Hash)
-						@worksheet[row_num + 2, col_num + 1] = product.send(column_name.values.first) # unless sheet[1, col_num + 1] == column
+						@worksheet[@current_row, col_num + 1] = product.send(column_name.values.first)  unless @worksheet[@current_row, col_num + 1] == product.send(column_name.values.first)
 					else
-						@worksheet[row_num + 2, col_num + 1] = product.data[column_name] #unless @worksheet[row_num + 2, col_num + 1] == column
+						@worksheet[@current_row, col_num + 1] = product.data[column_name] unless @worksheet[@current_row, col_num + 1] ==  product.data[column_name]
 					end
 				end
 
@@ -81,11 +84,13 @@ module Export
 
 		def add_options(options)
 			options.each_with_index do |option, row_num|
+				@current_row += 1
+
 				@column_names.each_with_index do |column_name, col_num|
 					if column_name.is_a?(Hash)
-						@worksheet[row_num + 2, col_num + 1] = option.send(column_name.values.first) # unless sheet[1, col_num + 1] == column
+						@worksheet[@current_row, col_num + 1] = option.send(column_name.values.first) unless @worksheet[@current_row, col_num + 1] == option.send(column_name.values.first)
 					else
-						@worksheet[row_num + 2, col_num + 1] = option.data[column_name] #unless @worksheet[row_num + 2, col_num + 1] == column
+						@worksheet[@current_row, col_num + 1] = option.data[column_name] unless @worksheet[@current_row, col_num + 1] ==  option.data[column_name]
 					end
 				end
 			end
