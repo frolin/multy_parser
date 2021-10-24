@@ -35,8 +35,7 @@ parsers:
       google_doc_id: '1L1kUWSc6tCLymAKifgMKbAENJX6MIGt4zusIgRiOV8o'
       spreadsheet_sync_url: '1_DhZvlzwlviXWVgksClNF1cNUl-F8e_Z9_-LjY0P-AU'
       file_type: 'with_pages'
-      pages: ['Масло оливковое']
-#      pages: ['Масло оливковое', "Оливки, пасты, брускеты", 'Овощная консервация', 'Сладости', 'Макароны, мука', 'Постная трапеза', 'Разное' ]
+      pages: ['Масло оливковое', "Оливки, пасты, брускеты", 'Овощная консервация', 'Сладости', 'Макароны, мука', 'Постная трапеза', 'Разное' ]
       header_row: 4
       start_row:  7
       sku_column: 9

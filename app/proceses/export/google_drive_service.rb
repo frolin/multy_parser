@@ -2,13 +2,13 @@ module Export
 	class GoogleDriveService
 		def initialize(parser)
 			@session ||= GoogleDrive::Session.from_service_account_key("config/multy-parser-254d73224276.json")
-			@products = Product.by_provider(parser.slug)
+			@products = Product.by_provider(parser.slug).order(:id)
 			@parser = parser
 			@worksheet = worksheet
 			@current_row = 1
 			@column_names = [
 				{ 'Наименование' => 'name' },
-				{ 'Изображения' => 'product_image_url' },
+				{ 'Изображения' => 'image_url' },
 				{ 'Категория 1' => 'category' },
 				{ 'Артикул' => 'vendor_code' },
 				{ 'Цена розница' => 'price' },
@@ -65,7 +65,7 @@ module Export
 
 		def add_products
 			@products.each_with_index do |product, row_num|
-				@current_row += 1	# header offset
+				@current_row += 1
 
 				@column_names.each_with_index do |column_name, col_num|
 					if column_name.is_a?(Hash)

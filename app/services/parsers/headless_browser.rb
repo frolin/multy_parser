@@ -25,7 +25,7 @@ module Parsers
 			image_href
 
 		rescue StandardError => e
-			Rails.logger.error("element not found")
+			Rails.logger.error("#{e}, element not found")
 			nil
 		end
 

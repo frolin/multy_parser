@@ -4,7 +4,7 @@ module ProductData
 	BASE_PERCENT = 67
 
 	included do
-		store_accessor :data, :category, :parser_name, :product_image_url, :vendor_code, :price
+		store_accessor :data, :category, :parser_name, :image_url, :vendor_code, :price
 
 		validates :sku, uniqueness: true, presence: true
 		before_create :generate_price #, :create_vendor_code,
